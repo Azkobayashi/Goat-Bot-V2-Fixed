@@ -4,7 +4,7 @@ module.exports.config = {
   name: 'chiyo',
   version: '1.0.0',
   hasPermission: 0,
-  category: ai,
+  category: "ai",
   usePrefix: false,
   aliases: ['gpt', 'openai', 'chi', 'c'],
   description: "An AI command powered by GPT-4o & Gemini Vision",
