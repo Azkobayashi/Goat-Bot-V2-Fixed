@@ -1,17 +1,15 @@
 const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
 
 module.exports = {
   config: {
     name: "upscale",
     aliases: ["8k", "8hd", "8kupscale"],
     version: "1.6",
-    role: 2,
+    role: 0, // anyone can use it now
     author: "Eran",
-    countDown:20,
-    shortDescription: "📸 Upscale images to 4K or 8K (VIP only)",
-    longDescription: "✨ Enhances and upscales an image to 4K or 8K resolution using an external API. VIP users only.",
+    countDown: 20,
+    shortDescription: "📸 Upscale images to 4K or 8K",
+    longDescription: "✨ Enhances and upscales an image to 4K or 8K resolution using an external API.",
     category: "image",
     guide: {
       en: "💡 {pn} [4k|8k] (reply to an image)"
@@ -20,20 +18,6 @@ module.exports = {
 
   onStart: async function ({ message, event, args }) {
     try {
-      // Load VIP list
-      const vipFile = path.join(__dirname, "vip.json");
-      let vipList = [];
-      if (fs.existsSync(vipFile)) {
-        vipList = JSON.parse(fs.readFileSync(vipFile, "utf8"));
-      } else {
-        fs.writeFileSync(vipFile, JSON.stringify([]));
-      }
-
-      // VIP check
-      if (!vipList.includes(event.senderID)) {
-        return message.reply("🚫 **VIP Access Only!**\n💎 This feature is for **VIP users**. Contact an admin to get access.");
-      }
-
       // Validate replied image
       if (
         !event.messageReply ||
@@ -46,8 +30,8 @@ module.exports = {
 
       // Check quality argument
       const quality = (args[0] || "4k").toLowerCase();
-      if (!["8k", "8k"].includes(quality)) {
-        return message.reply("⚠️ Invalid quality! Use `8k` or `8k` 🎯.");
+      if (!["4k", "8k"].includes(quality)) {
+        return message.reply("⚠️ Invalid quality! Use `4k` or `8k` 🎯.");
       }
 
       const imgUrl = encodeURIComponent(event.messageReply.attachments[0].url);
